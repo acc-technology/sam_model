@@ -1,0 +1,7 @@
+# pytorch/python/numpy formats
+*.pth
+*.pkl
+*.npy
+*.ts
+*.pt
+model_ts*.txt
