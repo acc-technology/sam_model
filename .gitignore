@@ -5,3 +5,6 @@
 *.ts
 *.pt
 model_ts*.txt
+
+runs/
+data/
