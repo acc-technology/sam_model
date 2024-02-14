@@ -10,4 +10,5 @@ model_ts*.txt
 runs/
 data/
 blind_data_split/
+blind_data_split2/
 tag_data/
