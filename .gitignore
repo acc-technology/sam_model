@@ -5,3 +5,10 @@
 *.ts
 *.pt
 model_ts*.txt
+*.zip
+
+runs/
+data/
+blind_data_split/
+blind_data_split2/
+tag_data/
