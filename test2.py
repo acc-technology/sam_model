@@ -1,6 +1,8 @@
 MODEL_TYPE = "vit_h"
 CHECKPOINT_PATH = "models/sam_vit_h_4b8939.pth"
 DEVICE = "cuda" #cpu,cudaMODEL_TYPE = "vit_h"
+YOLO_PATH='runs/detect/train3/weights/best.pt'
+pic_name="blind_3"
 
 from segment_anything import sam_model_registry
 
@@ -16,7 +18,7 @@ from ultralytics import YOLO
 # image = np.asarray(bytearray(resp.read()), dtype='uint8')
 # image = cv2.imdecode(image, cv2.IMREAD_COLOR)
 # image = cv2.resize(image, (int(image.shape[1]/2.5), int(image.shape[0]/2.5)))
-image = cv2.imread('pic/OIP-C.jpg')
+image = cv2.imread('pic/{}.jpg'.format(pic_name))
 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 image = cv2.resize(image, (int(image.shape[1]/2.5), int(image.shape[0]/2.5)))
 
@@ -54,10 +56,10 @@ def draw_masks_fromDict(image, masks_generated) :
 
 segmented_image = draw_masks_fromDict(image, masks_generated)
 
-cv2.imwrite('pic/res.jpg',segmented_image)
+cv2.imwrite('pic/res_{}.jpg'.format(pic_name),segmented_image)
 
 image_bboxes = image.copy()
-yolo_model = YOLO("yolov8n.pt")
+yolo_model = YOLO(YOLO_PATH)
 results = yolo_model.predict(image_bboxes)
 boxes = np.array(results[0].to('cpu').boxes.data)
 def box_label(image, box, label='', color=(128, 128, 128), txt_color=(255, 255, 255)):
@@ -139,4 +141,4 @@ print(masks.shape)
 COLORS = [(89, 161, 197),(67, 161, 255),(19, 222, 24),(186, 55, 2),(167, 146, 11),(190, 76, 98),(130, 172, 179),(115, 209, 128),(204, 79, 135),(136, 126, 185),(209, 213, 45),(44, 52, 10),(101, 158, 121),(179, 124, 12),(25, 33, 189),(45, 115, 11),(73, 197, 184),(62, 225, 221),(32, 46, 52),(20, 165, 16),(54, 15, 57),(12, 150, 9),(10, 46, 99),(94, 89, 46),(48, 37, 106),(42, 10, 96),(7, 164, 128),(98, 213, 120),(40, 5, 219),(54, 25, 150),(251, 74, 172),(0, 236, 196),(21, 104, 190),(226, 74, 232),(120, 67, 25),(191, 106, 197),(8, 15, 134),(21, 2, 1),(142, 63, 109),(133, 148, 146),(187, 77, 253),(155, 22, 122),(218, 130, 77),(164, 102, 79),(43, 152, 125),(185, 124, 151),(95, 159, 238),(128, 89, 85),(228, 6, 60),(6, 41, 210),(11, 1, 133),(30, 96, 58),(230, 136, 109),(126, 45, 174),(164, 63, 165),(32, 111, 29),(232, 40, 70),(55, 31, 198),(148, 211, 129),(10, 186, 211),(181, 201, 94),(55, 35, 92),(129, 140, 233),(70, 250, 116),(61, 209, 152),(216, 21, 138),(100, 0, 176),(3, 42, 70),(151, 13, 44),(216, 102, 88),(125, 216, 93),(171, 236, 47),(253, 127, 103),(205, 137, 244),(193, 137, 224),(36, 152, 214),(17, 50, 238),(154, 165, 67),(114, 129, 60),(119, 24, 48),(73, 8, 110)]
 segmented_image = draw_masks_fromList(image, masks.to('cpu'), boxes, COLORS)
 
-cv2.imwrite('pic/yolo_res&sam.jpg',segmented_image)
+cv2.imwrite('pic/yolo_res&sam_{}.jpg'.format(pic_name),segmented_image)
